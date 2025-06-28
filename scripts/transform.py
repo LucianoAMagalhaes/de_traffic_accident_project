@@ -25,7 +25,6 @@ df_melted["Deaths"] = (
     .astype(float)
 )
 
-# %%
 print(df_melted)
 
 df_melted.to_csv("../data/processed/deaths_transformed.csv", index=False)
