@@ -5,20 +5,20 @@ import os
 import subprocess
 
 default_args = {
-    'owner': 'luciano',
+    'owner': 'airflow',
     'start_date': datetime(2024, 1, 1),
     'retries': 1,
 }
 
 dag = DAG(
-    dag_id='etl_pipeline_acidentes',
+    dag_id='etl_pipeline_accidents',
     default_args=default_args,
-    description='Pipeline ETL de acidentes de trânsito com Airflow',
-    schedule_interval=None,  # você pode mudar para '0 8 * * *' para rodar todo dia às 8h
+    description='Pipeline ETL Data Traffic Accidents',
+    schedule_interval=None,
     catchup=False
 )
 
-# Caminhos relativos ao DAG
+# File paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCRIPT_DIR = os.path.join(BASE_DIR, 'scripts')
 
@@ -29,13 +29,13 @@ def run_load_script():
     subprocess.run(['python', os.path.join(SCRIPT_DIR, 'load.py')], check=True)
 
 transform_task = PythonOperator(
-    task_id='transformar_dados',
+    task_id='transform_data',
     python_callable=run_transform_script,
     dag=dag
 )
 
 load_task = PythonOperator(
-    task_id='carregar_dados',
+    task_id='load_data',
     python_callable=run_load_script,
     dag=dag
 )
